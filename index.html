@@ -60,7 +60,7 @@ let btn=document.getElementById("hack")
             btn.style.backgroundColor="red"
             try {
                 const response = await fetch(
-                    `https://proxy.streamvideo.co.in/fetch/api.penpencil.co/v3/community/posts/v2?channelId=69c5704f5601f65e1e0b8d0d`,
+                    `https://proxy.streamvideo.co.in/fetch/api.penpencil.co/v3/community/posts/v2?channelId=69c5704f5601f65e1e0b8d0d/page=${page}`,
                     {
                         method: "GET",
                         headers: {
