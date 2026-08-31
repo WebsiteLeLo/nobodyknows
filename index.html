@@ -1,1 +1,119 @@
-Hiroshi Died!!!!
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PW Community API Test</title>
+</head>
+<body>
+
+    <button onclick="fetchPosts(1)" style="background-color: green; color:white;" id="hack" >Bomb!!!!!</button>
+    
+
+    <h3>Response</h3>
+    <pre id="output"></pre>
+
+    <script>
+        const TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3ODgxNjEzNDgsImV4cCI6MTc4ODc2NjE0OC40ODgsImRhdGEiOnsiX2lkIjoiNjgzYTc5NmM1Yzc0YTFkYzQ2NjE5M2U2IiwidXNlcm5hbWUiOiI5NjIyOTYwMjM5IiwiZmlyc3ROYW1lIjoiSW1yYW4iLCJsYXN0TmFtZSI6IkhhbWlkIiwib3JnYW5pemF0aW9uIjp7Il9pZCI6IjVlYjM5M2VlOTVmYWI3NDY4YTc5ZDE4OSIsIndlYnNpdGUiOiJwaHlzaWNzd2FsbGFoLmNvbSIsIm5hbWUiOiJQaHlzaWNzd2FsbGFoIn0sImVtYWlsIjoidGhva2VyaW1yYW42QGdtYWlsLmNvbSIsInJvbGVzIjpbIjViMjdiZDk2NTg0MmY5NTBhNzc4YzZlZiJdLCJjb3VudHJ5R3JvdXAiOiJJTiIsInR5cGUiOiJVU0VSIn0sImp0aSI6ImpWbFlRR0dtUXJtZi02VEw4Ni1JRVFfNjgzYTc5NmM1Yzc0YTFkYzQ2NjE5M2U2In0.i1J_EhlpJYMTqGBnSbjTIgn9N0yqtDchwY13WdfQJHs";
+
+        function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+let n=0 
+let btn=document.getElementById("hack")
+
+        async function likePost(post, react) {
+            try {
+                const response = await fetch(
+                    `https://pw-api-gate.penpencil.co/v3/community/posts/${post}/reactions`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${TOKEN}`,
+                            "Content-Type": "application/json",
+                            "Client-Type": "WEB"
+                        },
+                        body: JSON.stringify({
+                            reaction: true,
+                            type: react,
+                            isBatchPurchased: "true",
+                            post_type: "post",
+                            batch_id: "6a7d68b8535172b88f8ed015"
+                        })
+                    }
+                );
+
+                const data = await response.json();
+               // console.log(data)
+                if(data.data.message == "Reaction Created"){
+                n+=1
+                document.getElementById("output").textContent=n
+            }
+
+            } catch (err) {
+                //document.getElementById("output").textContent =
+                 //   "Like Error: " + err.message;
+            }
+        }
+
+
+        async function fetchPosts(page) {
+            btn.disabled=true
+            btn.style.backgroundColor="red"
+            try {
+                const response = await fetch(
+                    `https://pw-api-gate.penpencil.co/v3/community/posts/v2?channelId=69c5704f5601f65e1e0b8d0d&page=${page}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${TOKEN}`,
+                            "Client-Type": "WEB",
+                            "Accept": "application/json"
+                        }
+                    }
+                );
+
+                const data = await response.json();
+                for(i of data.data.posts){
+                    for(let e=0; e<10; e++){
+                    likePost(i._id, "like")
+                    await sleep(200);
+                    likePost(i._id, "laugh")
+                    await sleep(200);
+                    likePost(i._id, "fire")
+                    await sleep(200);
+                    likePost(i._id, "heart")
+                    await sleep(200);
+                    likePost(i._id, "smile")
+                    await sleep(200);
+                    likePost(i._id, "like")
+                    await sleep(200);
+                    likePost(i._id, "laugh")
+                    await sleep(200);
+                    likePost(i._id, "fire")
+                    await sleep(200);
+                    likePost(i._id, "heart")
+                    await sleep(200);
+                    likePost(i._id, "smile")
+                    await sleep(200);
+                    
+
+                    }
+                }
+                btn.disabled=false
+            btn.style.backgroundColor="green"
+            await sleep(5000);
+            btn.click()
+                
+
+            } catch (err) {
+                document.getElementById("output").textContent =
+                    "Fetch Error: " + err.message;
+                    await sleep(200);
+                    fetchPosts(1)
+            }
+        }
+btn.click()
+        
+    </script>
+
+</body>
+</html>
